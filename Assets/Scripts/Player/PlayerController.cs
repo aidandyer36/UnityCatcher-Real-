@@ -7,6 +7,9 @@ public class PlayerController : MonoBehaviour
     
     public float moveSpeed; //Changes speed of player movement
 
+    public LayerMask solidObjectsLayer;
+    public LayerMask longGrass;
+
     private bool isMoving; //Checks if player is moving
     private Vector2 input; 
 
@@ -37,11 +40,16 @@ public class PlayerController : MonoBehaviour
                 var targetPos = transform.position;
                 targetPos.x += input.x;
                 targetPos.y += input.y;
-
-                //starts the coroutine for movement to resolve at the same time as other processes
-                StartCoroutine(Move(targetPos));
+                if (IsWalkable(targetPos))
+                {
+                    //starts the coroutine for movement to resolve at the same time as other processes
+                    StartCoroutine(Move(targetPos));
+                }
+                
             }
         }
+
+        animator.SetBool("isMoving", isMoving);
     }
 
     IEnumerator Move(Vector3 targetPos)
@@ -54,6 +62,32 @@ public class PlayerController : MonoBehaviour
             yield return null;
         }
         transform.position = targetPos;
+
         isMoving = false;
+
+        CheckForEncounters();
+    }
+
+    private bool IsWalkable(Vector3 targetPos)
+    {   
+        if(Physics2D.OverlapCircle(targetPos, 0.2f, solidObjectsLayer) != null)
+        {
+            return false;
+        }
+        else
+        {
+            return true;
+        }
+    }
+
+    private void CheckForEncounters()
+    {
+        if(Physics2D.OverlapCircle(transform.position, 0.2f, longGrass) != null)
+        {
+            if(Random.Range(1, 101) <= 10)
+            {
+                Debug.Log("ENCOUNTER");
+            }
+        }
     }
 }

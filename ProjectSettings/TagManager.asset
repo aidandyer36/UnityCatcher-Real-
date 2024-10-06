@@ -13,8 +13,8 @@ TagManager:
   - UI
   - 
   - 
-  - 
-  - 
+  - Solid Objects
+  - Long Grass
   - 
   - 
   - 
@@ -43,6 +43,9 @@ TagManager:
     locked: 0
   - name: Background
     uniqueID: 85421595
+    locked: 0
+  - name: Foreground
+    uniqueID: 1421378879
     locked: 0
   - name: Player
     uniqueID: 1828184453
