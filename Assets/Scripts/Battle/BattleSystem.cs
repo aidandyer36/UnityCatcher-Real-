@@ -16,10 +16,12 @@ public class BattleSystem : MonoBehaviour
     BattleState state;
     int currentAction;
     int currentMove;
+    bool isChanging;
 
     private void Awake()
     {
         playerControls = new PlayerControls();
+        Debug.Log("Player Controls Created");
         StartCoroutine(SetupBattle());
     }
     private void OnEnable()
@@ -145,7 +147,7 @@ public class BattleSystem : MonoBehaviour
 
     void HandleMoveSelection()
     {
-        var menuInput = playerControls.Travel.Move.ReadValue<Vector2>() * Time.deltaTime;
+        var menuInput = playerControls.UI.Navigate.ReadValue<Vector2>();
         if (menuInput.x != 0) menuInput.y = 0;
 
         if (menuInput.x > 0)
