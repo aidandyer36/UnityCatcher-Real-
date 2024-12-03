@@ -19,8 +19,6 @@ public class DialogueManager : MonoBehaviour, IDataPersistence
     [SerializeField] private GameObject continueIcon;
     [SerializeField] private TextMeshProUGUI dialogueText;
     [SerializeField] private TextMeshProUGUI displayNameText;
-    [SerializeField] private Animator portraitAnimator;
-    private Animator layoutAnimator;
 
     [Header("Choices UI")]
     [SerializeField] private GameObject[] choices;
@@ -38,8 +36,6 @@ public class DialogueManager : MonoBehaviour, IDataPersistence
     private static DialogueManager instance;
 
     private const string SPEAKER_TAG = "speaker";
-    private const string PORTRAIT_TAG = "portrait";
-    private const string LAYOUT_TAG = "layout";
    
     private DialogueVariables dialogueVariables;
 
@@ -50,7 +46,7 @@ public class DialogueManager : MonoBehaviour, IDataPersistence
             Debug.LogWarning("Found more than one Dialogue Manager in the scene");
         }
         instance = this;
-
+    
         playerControls = new PlayerControls();
 
     }
@@ -81,8 +77,6 @@ public class DialogueManager : MonoBehaviour, IDataPersistence
         dialogueIsPlaying = false;
         dialoguePanel.SetActive(false);
 
-        // get the layout animator
-        layoutAnimator = dialoguePanel.GetComponent<Animator>();
 
         // get all of the choices text 
         choicesText = new TextMeshProUGUI[choices.Length];
@@ -123,8 +117,6 @@ public class DialogueManager : MonoBehaviour, IDataPersistence
 
         // reset portrait, layout, and speaker
         displayNameText.text = "???";
-        portraitAnimator.Play("default");
-        layoutAnimator.Play("right");
 
         ContinueStory();
     }
@@ -211,7 +203,7 @@ public class DialogueManager : MonoBehaviour, IDataPersistence
 
         // actions to take after the entire line has finished displaying
         continueIcon.SetActive(true);
-        DisplayChoices();
+        this.DisplayChoices();
 
         canContinueToNextLine = true;
     }
@@ -245,14 +237,6 @@ public class DialogueManager : MonoBehaviour, IDataPersistence
                     Debug.Log("speaker=" + tagValue);
                     displayNameText.text = tagValue;
                     break;
-                case PORTRAIT_TAG:
-                    Debug.Log("portrait=" + tagValue);
-                    portraitAnimator.Play(tagValue);
-                    break;
-                case LAYOUT_TAG:
-                    Debug.Log("layout=" + tagValue);
-                    layoutAnimator.Play(tagValue);
-                    break;
                 default:
                     Debug.LogWarning("Tag came in but is not currently being handled: " + tag);
                     break;
@@ -275,6 +259,7 @@ public class DialogueManager : MonoBehaviour, IDataPersistence
         // enable and initialize the choices up to the amount of choices for this line of dialogue
         foreach (Choice choice in currentChoices)
         {
+            Debug.Log("Printing Choice");
             choices[index].gameObject.SetActive(true);
             choicesText[index].text = choice.text;
             index++;
@@ -282,6 +267,7 @@ public class DialogueManager : MonoBehaviour, IDataPersistence
         // go through the remaining choices the UI supports and make sure they're hidden
         for (int i = index; i < choices.Length; i++)
         {
+            Debug.Log("No Choice here");
             choices[i].gameObject.SetActive(false);
         }
 

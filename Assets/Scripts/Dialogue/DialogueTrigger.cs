@@ -16,6 +16,7 @@ public class DialogueTrigger : MonoBehaviour
 
 
     private PlayerControls playerControls;
+    [SerializeField] PlayerController player;
     private bool playerInRange;
     
   
@@ -37,6 +38,7 @@ private void Awake()
 
     private void Update()
     {
+        playerInRange = player.interactable;
         if (playerInRange && !DialogueManager.GetInstance().dialogueIsPlaying)
         {
           visualCue.SetActive(true);

@@ -19,6 +19,7 @@ public class PlayerController : MonoBehaviour, IDataPersistence
     [SerializeField] private float speed, sprintSpeed, walkSpeed;
     public LayerMask solidObjectsLayer;
     public LayerMask interactableLayer;
+    public LayerMask interaction;
     public GameObject pausemenu; //new//
     public GameObject mapmenu; //new//
     public GameObject controlmenu; //new//
@@ -29,11 +30,11 @@ public class PlayerController : MonoBehaviour, IDataPersistence
     private Animator animator;
 
     private SpriteRenderer spriteRenderer;
-
+    private Vector3 currentPosition;
     private Vector2 input;
     
     private bool isMoving;
-
+    public bool interactable;
 
 
     private void Awake()
@@ -43,6 +44,7 @@ public class PlayerController : MonoBehaviour, IDataPersistence
         col = GetComponent<Collider2D>();
         animator = GetComponent<Animator>();
         spriteRenderer = GetComponent<SpriteRenderer>();
+        interactable = false;
     }
 
     private void OnEnable()
@@ -128,6 +130,8 @@ public class PlayerController : MonoBehaviour, IDataPersistence
             Move();
         }
 
+        interactable = isInteractable(currentPosition);
+
     }
 
     private void Move()
@@ -135,7 +139,7 @@ public class PlayerController : MonoBehaviour, IDataPersistence
         if(!isMoving){
             Vector2 movementInput = playerControls.Travel.Move.ReadValue<Vector2>();
 
-            Vector3 currentPosition = transform.position;
+            currentPosition = transform.position;
             Vector3 targetpos = transform.position;
             if(movementInput.x != 0) movementInput.y = 0;
             targetpos.x += movementInput.x;
@@ -195,5 +199,14 @@ public class PlayerController : MonoBehaviour, IDataPersistence
             return false;
         }
         return true;
+    }
+    public bool isInteractable(Vector3 currentpos){
+        
+        if(Physics2D.OverlapCircle(currentpos, 0.2f, interaction) != null)
+        {
+            Debug.Log("Overlap");
+            return true;
+        }
+        return false;
     }
 }

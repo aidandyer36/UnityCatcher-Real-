@@ -16,7 +16,7 @@ TagManager:
   - Solid Objects
   - Long Grass
   - Interactable
-  - 
+  - Interaction
   - 
   - 
   - 
@@ -47,6 +47,12 @@ TagManager:
   - name: Foreground
     uniqueID: 1421378879
     locked: 0
+  - name: BubbleLayer
+    uniqueID: 2188993885
+    locked: 0
   - name: Player
     uniqueID: 1828184453
+    locked: 0
+  - name: Dialogue
+    uniqueID: 588159697
     locked: 0

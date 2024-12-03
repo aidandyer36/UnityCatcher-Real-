@@ -181,11 +181,11 @@ public class BattleSystem : MonoBehaviour
 
         dialogueBox.UpdateMoveSelection(currentMove, playerUnit.Pokemon.Moves[currentMove]);
 
-        //if (playerControls.Travel.Interact2.triggered)
-        //{
-        //    dialogueBox.ToggleMoveSelector(false);
-        //    dialogueBox.ToggleDialogueText(true);
-        //    StartCoroutine(PerformPlayerMove());
-        //}
+        if (playerControls.Travel.Interact2.triggered)
+        {
+            dialogueBox.ToggleMoveSelector(false);
+            dialogueBox.ToggleDialogueText(true);
+            StartCoroutine(PerformPlayerMove());
+            }
     }
 }
