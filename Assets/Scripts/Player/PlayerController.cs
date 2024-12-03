@@ -1,93 +1,199 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.InputSystem;
+using UnityEngine.Windows;
+using Ink.Runtime;
+using UnityEngine.InputSystem.XR;
 
-public class PlayerController : MonoBehaviour
+public class PlayerController : MonoBehaviour, IDataPersistence
 {
-    
-    public float moveSpeed; //Changes speed of player movement
 
+
+    private PlayerControls playerControls;
+
+    private Rigidbody2D rb;
+
+    [SerializeField] private float speed, sprintSpeed, walkSpeed;
     public LayerMask solidObjectsLayer;
-    public LayerMask longGrass;
+    public LayerMask interactableLayer;
+    public GameObject pausemenu; //new//
+    public GameObject mapmenu; //new//
+    public GameObject controlmenu; //new//
+    public GameObject inventorymenu; //new//
 
-    private bool isMoving; //Checks if player is moving
-    private Vector2 input; 
+    private Collider2D col;
 
     private Animator animator;
 
+    private SpriteRenderer spriteRenderer;
+
+    private Vector2 input;
+    
+    private bool isMoving;
+
+
+
     private void Awake()
     {
-        animator = GetComponent<Animator>(); //get animated component attached to same object as script (Cache the animator)
+        playerControls = new PlayerControls();
+        rb = GetComponent<Rigidbody2D>();
+        col = GetComponent<Collider2D>();
+        animator = GetComponent<Animator>();
+        spriteRenderer = GetComponent<SpriteRenderer>();
     }
-    private void Update()
+
+    private void OnEnable()
     {
-        //checks that the last coroutine is over before starting another
-        if(!isMoving)
-        {
-            //get player inputs
-            input.x = Input.GetAxisRaw("Horizontal");
-            input.y = Input.GetAxisRaw("Vertical");
-
-            //removes diagonal movement
-            if(input.x != 0) 
-                input.y = 0; 
-
-            if(input != Vector2.zero)
-            {
-                animator.SetFloat("moveX", input.x);
-                animator.SetFloat("moveY", input.y);
-                //finds where the target position the player has to get to is
-                var targetPos = transform.position;
-                targetPos.x += input.x;
-                targetPos.y += input.y;
-                if (IsWalkable(targetPos))
-                {
-                    //starts the coroutine for movement to resolve at the same time as other processes
-                    StartCoroutine(Move(targetPos));
-                }
-                
-            }
-        }
-
-        animator.SetBool("isMoving", isMoving);
+        playerControls.Enable();
     }
 
-    IEnumerator Move(Vector3 targetPos)
+    private void Start()
     {
-        isMoving = true;
-    
-        while((targetPos - transform.position).sqrMagnitude > Mathf.Epsilon)
-        {
-            transform.position = Vector3.MoveTowards(transform.position, targetPos, moveSpeed * Time.deltaTime);
-            yield return null;
-        }
-        transform.position = targetPos;
-
-        isMoving = false;
-
-        CheckForEncounters();
+        playerControls.Travel.Sprint.performed += _ => Sprint(); //new//
+        playerControls.Travel.Sprint.canceled += _ => SprintEnd(); //new//
+        rb = GetComponent<Rigidbody2D>(); //new//
+        transform.position = Vector3.zero;
     }
 
-    private bool IsWalkable(Vector3 targetPos)
-    {   
-        if(Physics2D.OverlapCircle(targetPos, 0.2f, solidObjectsLayer) != null)
+    private void Sprint() //new//
+    {
+        Vector2 movementInput = playerControls.Travel.Move.ReadValue<Vector2>(); // Read as Vector2
+        if (movementInput.magnitude > 0) // Check if there is any movement
         {
-            return false;
+            speed = sprintSpeed; //speed change//
         }
         else
         {
-            return true;
+            speed = walkSpeed;
         }
     }
 
-    private void CheckForEncounters()
+    private void SprintEnd() // Updated SprintEnd method
     {
-        if(Physics2D.OverlapCircle(transform.position, 0.2f, longGrass) != null)
+        Vector2 movementInput = playerControls.Travel.Move.ReadValue<Vector2>(); // Read as Vector2
+        if (movementInput.magnitude == 0) // Check if there is no movement
         {
-            if(Random.Range(1, 101) <= 10)
-            {
-                Debug.Log("ENCOUNTER");
-            }
+            speed = walkSpeed; // Set to walk speed when not moving
         }
+        else
+        {
+            speed = sprintSpeed; // Keep sprint speed if moving
+        }
+    }
+
+
+    private void Update()
+    {
+        if (playerControls.Travel.Interact1.triggered)
+        {
+  
+            Debug.Log("Interact1");
+        }
+        if (playerControls.Travel.Interact2.triggered)
+        {
+     
+            Debug.Log("Interact2");
+        }
+        if (playerControls.Travel.Interact3.triggered)
+        {
+          
+            Debug.Log("Interact3");
+        }
+        if (playerControls.Travel.Interact4.triggered)
+        {
+            Debug.Log("Interact4");
+        }
+        if (playerControls.Travel.Sprint.triggered)
+        {
+            Debug.Log("Sprinting");
+        }
+        if (playerControls.Travel.Interact5.triggered)
+        {
+            Debug.Log("Interact5");
+        }
+
+
+
+        if (PauseManager.paused) return;
+
+        if (DialogueManager.GetInstance().dialogueIsPlaying)
+        {
+            return;
+        }
+        if (rb.constraints != RigidbodyConstraints2D.FreezePosition)
+        {
+            Move();
+        }
+
+    }
+
+    private void Move()
+    {
+        if(!isMoving){
+            Vector2 movementInput = playerControls.Travel.Move.ReadValue<Vector2>();
+
+            Vector3 currentPosition = transform.position;
+            Vector3 targetpos = transform.position;
+            if(movementInput.x != 0) movementInput.y = 0;
+            targetpos.x += movementInput.x;
+            targetpos.y += movementInput.y; // Update Y position
+            if(isWalkable(targetpos)){
+                StartCoroutine(Movement(targetpos));
+            }
+         transform.position = currentPosition;
+        
+            if(movementInput != Vector2.zero){
+                animator.SetFloat("moveX", movementInput.x);
+                animator.SetFloat("moveY", movementInput.y);
+            }
+            // Animation
+            if (movementInput.x != 0 || movementInput.y != 0)
+                animator.SetBool("isMoving", true);
+            else
+                animator.SetBool("isMoving", false);
+
+        }
+        // Read the movement input as a Vector2
+       
+        
+    }
+
+    IEnumerator Movement(Vector3 targetpos)
+    {
+        isMoving = true;
+        while((targetpos - transform.position).sqrMagnitude > Mathf.Epsilon){
+            transform.position = Vector3.MoveTowards(transform.position, targetpos, speed * Time.deltaTime);
+            yield return null;
+        }
+        transform.position = targetpos;
+
+        isMoving = false;
+    }
+    public void LoadData(GameData data)
+    {
+        this.transform.position = data.playerPosition;
+    }
+
+    public void SaveData(GameData data)
+    {
+        data.playerPosition = this.transform.position;
+    }
+
+    private void OnDisable()
+    {
+        playerControls.Disable();
+
+    }
+
+    private bool isWalkable(Vector3 targetpos)
+    {
+        if(Physics2D.OverlapCircle(targetpos, 0.2f, solidObjectsLayer | interactableLayer) != null)
+        {
+            return false;
+        }
+        return true;
     }
 }
