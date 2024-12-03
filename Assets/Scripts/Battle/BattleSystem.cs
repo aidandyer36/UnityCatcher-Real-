@@ -11,16 +11,21 @@ public class BattleSystem : MonoBehaviour
     [SerializeField] BattleHUD playerHUD;
     [SerializeField] BattleHUD enemyHUD;
     [SerializeField] BattleDialogueBox dialogueBox;
+    private PlayerControls playerControls;
 
     BattleState state;
     int currentAction;
     int currentMove;
 
-    private void Start()
+    private void Awake()
     {
+        playerControls = new PlayerControls();
         StartCoroutine(SetupBattle());
     }
-
+    private void OnEnable()
+    {
+        playerControls.Enable();
+    }
     public IEnumerator SetupBattle()
     {
         playerUnit.Setup();
@@ -31,7 +36,7 @@ public class BattleSystem : MonoBehaviour
         dialogueBox.SetMoveNames(playerUnit.Pokemon.Moves);
 
         yield return dialogueBox.TypeDialogue($"A wild {enemyUnit.Pokemon.Base.Name} appeared.");
-        yield return new WaitForSeconds(1f);
+        yield return new WaitForSeconds(.75f);
 
         PlayerAction();
     }
@@ -39,6 +44,8 @@ public class BattleSystem : MonoBehaviour
     void PlayerAction()
     {
         state = BattleState.PlayerAction;
+        dialogueBox.ToggleMoveSelector(false);
+        dialogueBox.ToggleDialogueText(true);
         StartCoroutine(dialogueBox.TypeDialogue("Choose an action"));
         dialogueBox.ToggleActionSelector(true);
     }
@@ -51,13 +58,53 @@ public class BattleSystem : MonoBehaviour
         dialogueBox.ToggleMoveSelector(true);
     }
 
+    IEnumerator PerformPlayerMove()
+    {
+        state = BattleState.Busy;
+        var move = playerUnit.Pokemon.Moves[currentMove];
+        yield return dialogueBox.TypeDialogue($"{playerUnit.Pokemon.Base.Name} used {move.Base.Name}");
+
+        yield return new WaitForSeconds(.75f);
+
+        bool isFainted = enemyUnit.Pokemon.TakeDamage(move, playerUnit.Pokemon);
+        yield return enemyHUD.SetHPSmooth();
+        if (isFainted)
+        {
+            yield return dialogueBox.TypeDialogue($"{enemyUnit.Pokemon.Base.Name} fainted!");
+        }
+        else
+        {
+            StartCoroutine(EnemyMove());
+        }
+    }
+
+    IEnumerator EnemyMove()
+    {
+        state = BattleState.EnemyMove;
+        var move = enemyUnit.Pokemon.GetRandomMove();
+        yield return dialogueBox.TypeDialogue($"{enemyUnit.Pokemon.Base.Name} used {move.Base.Name}");
+
+        yield return new WaitForSeconds(1f);
+
+        bool isFainted = playerUnit.Pokemon.TakeDamage(move, enemyUnit.Pokemon);
+        yield return playerHUD.SetHPSmooth();
+        if (isFainted)
+        {
+            yield return dialogueBox.TypeDialogue($"{playerUnit.Pokemon.Base.Name} fainted!");
+        }
+        else
+        {
+            PlayerAction();
+        }
+    }
+
     private void Update()
     {
          if(state == BattleState.PlayerAction)
         {
             HandleActionSelection();
         }
-         if(state == BattleState.PlayerMove)
+        if(state == BattleState.PlayerMove)
         {
             HandleMoveSelection();
         }
@@ -65,27 +112,23 @@ public class BattleSystem : MonoBehaviour
     
     void HandleActionSelection()
     {
-        if (Input.GetKeyDown(KeyCode.DownArrow))
+        if (playerControls.Travel.Move.ReadValue<Vector2>().y < 0)
         {
+            Debug.Log(currentMove);
             if (currentAction < 1)
-            {
                 currentAction++;
-            }
-            else
-                currentAction--;
             
         }
-        else if(Input.GetKeyDown(KeyCode.UpArrow))
+        else if(playerControls.Travel.Move.ReadValue<Vector2>().y > 0)
         {
+            Debug.Log(currentMove);
             if (currentAction > 0)
                 currentAction--;
-            else
-               currentAction++;
         }
 
         dialogueBox.UpdateActionSelection(currentAction);
 
-        if (Input.GetKeyDown(KeyCode.Z))
+        if (playerControls.Travel.Interact2.triggered)
         {
             if (currentAction == 0)
             {
@@ -102,27 +145,45 @@ public class BattleSystem : MonoBehaviour
 
     void HandleMoveSelection()
     {
-        if (Input.GetKeyDown(KeyCode.RightArrow))
+        var menuInput = playerControls.Travel.Move.ReadValue<Vector2>() * Time.deltaTime;
+        if (menuInput.x != 0) menuInput.y = 0;
+
+        if (menuInput.x > 0)
         {
-            if(currentMove < playerUnit.Pokemon.Moves.Count - 1)
-                currentMove++;
+            Debug.Log("Right Arrow");
+            if (currentMove < playerUnit.Pokemon.Moves.Count - 1)
+              ++currentMove;
+            Debug.Log(currentMove);
         }
-        else if (Input.GetKeyDown(KeyCode.LeftArrow))
+        else if (menuInput.x < 0) 
         {
+            Debug.Log("Left Arrow");
             if (currentMove > 0)
-                currentMove--;
+                --currentMove;
+            Debug.Log(currentMove);
         }
-        else if (Input.GetKeyDown(KeyCode.DownArrow))
+        else if (menuInput.y < 0)
         {
+            Debug.Log("Down Arrow");
             if (currentMove < playerUnit.Pokemon.Moves.Count - 2)
                 currentMove += 2;
+            Debug.Log(currentMove);
         }
-        else if (Input.GetKeyDown(KeyCode.UpArrow))
+        else if (menuInput.y > 0) 
         {
+            Debug.Log("Up Arrow");
             if (currentMove > 1)
                 currentMove -= 2;
+            Debug.Log(currentMove);
         }
 
         dialogueBox.UpdateMoveSelection(currentMove, playerUnit.Pokemon.Moves[currentMove]);
+
+        //if (playerControls.Travel.Interact2.triggered)
+        //{
+        //    dialogueBox.ToggleMoveSelector(false);
+        //    dialogueBox.ToggleDialogueText(true);
+        //    StartCoroutine(PerformPlayerMove());
+        //}
     }
 }
