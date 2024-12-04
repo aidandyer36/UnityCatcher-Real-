@@ -5,6 +5,8 @@ using TMPro;
 using Ink.Runtime;
 using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
+using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class DialogueManager : MonoBehaviour, IDataPersistence
 {
@@ -19,6 +21,9 @@ public class DialogueManager : MonoBehaviour, IDataPersistence
     [SerializeField] private GameObject continueIcon;
     [SerializeField] private TextMeshProUGUI dialogueText;
     [SerializeField] private TextMeshProUGUI displayNameText;
+    [SerializeField] private GameObject introBackground;
+    [SerializeField] private GameObject introKynn;
+    [SerializeField] private GameObject choiceBox4;
 
     [Header("Choices UI")]
     [SerializeField] private GameObject[] choices;
@@ -28,6 +33,9 @@ public class DialogueManager : MonoBehaviour, IDataPersistence
 
     private Story currentStory;
     public bool dialogueIsPlaying { get; private set; }
+
+    private bool hasPlayed = false;
+    [SerializeField] private TextAsset JSON;
 
     private bool canContinueToNextLine = false;
 
@@ -75,6 +83,8 @@ public class DialogueManager : MonoBehaviour, IDataPersistence
     private void Start()
     {
         dialogueIsPlaying = false;
+        introKynn.SetActive(false);
+        introBackground.SetActive(false);
         dialoguePanel.SetActive(false);
 
 
@@ -93,6 +103,10 @@ public class DialogueManager : MonoBehaviour, IDataPersistence
         // return right away if dialogue isn't playing
         if (!dialogueIsPlaying)
         {
+            if (!hasPlayed)
+            {
+                DialogueManager.GetInstance().EnterDialogueMode(JSON, true);
+            }
             return;
         }
 
@@ -107,13 +121,34 @@ public class DialogueManager : MonoBehaviour, IDataPersistence
         }
     }
 
-    public void EnterDialogueMode(TextAsset inkJSON)
+    public void EnterDialogueMode(TextAsset inkJSON, bool isIntro)
     {
         currentStory = new Story(inkJSON.text);
         dialogueIsPlaying = true;
         dialoguePanel.SetActive(true);
+        if(isIntro)
+        {
+            introBackground.SetActive(true);
+            introKynn.SetActive(true);
+            hasPlayed = true;
+        }
+        List<Choice> currentChoices = currentStory.currentChoices;
+        if (currentChoices.Count == 0)
+        {
+            choiceBox4.SetActive(false);
+        }
+
+        else
+        {
+            choiceBox4.SetActive(true);
+        }
+
 
         dialogueVariables.StartListening(currentStory);
+        currentStory.BindExternalFunction("beginGame", (string starter) =>
+        {
+            hasPlayed = true;
+        });
 
         // reset portrait, layout, and speaker
         displayNameText.text = "???";
@@ -126,8 +161,11 @@ public class DialogueManager : MonoBehaviour, IDataPersistence
         yield return new WaitForSeconds(0.2f);
 
         dialogueVariables.StopListening(currentStory);
+        currentStory.UnbindExternalFunction("beginGame");
 
         dialogueIsPlaying = false;
+        introKynn.SetActive(false);
+        introBackground.SetActive(false);
         dialoguePanel.SetActive(false);
         dialogueText.text = "";
     }
@@ -248,30 +286,38 @@ public class DialogueManager : MonoBehaviour, IDataPersistence
     {
         List<Choice> currentChoices = currentStory.currentChoices;
 
-        // defensive check to make sure our UI can support the number of choices coming in
-        if (currentChoices.Count > choices.Length)
+        if (currentChoices.Count == 0)
         {
-            Debug.LogError("More choices were given than the UI can support. Number of choices given: "
-                + currentChoices.Count);
+            choiceBox4.SetActive(false);
         }
+        else
+        {
+            choiceBox4.SetActive(true);
+            // defensive check to make sure our UI can support the number of choices coming in
+            if (currentChoices.Count > choices.Length)
+            {
+                Debug.LogError("More choices were given than the UI can support. Number of choices given: "
+                    + currentChoices.Count);
+            }
 
-        int index = 0;
-        // enable and initialize the choices up to the amount of choices for this line of dialogue
-        foreach (Choice choice in currentChoices)
-        {
-            Debug.Log("Printing Choice");
-            choices[index].gameObject.SetActive(true);
-            choicesText[index].text = choice.text;
-            index++;
-        }
-        // go through the remaining choices the UI supports and make sure they're hidden
-        for (int i = index; i < choices.Length; i++)
-        {
-            Debug.Log("No Choice here");
-            choices[i].gameObject.SetActive(false);
-        }
+            int index = 0;
+            // enable and initialize the choices up to the amount of choices for this line of dialogue
+            foreach (Choice choice in currentChoices)
+            {
+                Debug.Log("Printing Choice");
+                choices[index].gameObject.SetActive(true);
+                choicesText[index].text = choice.text;
+                index++;
+            }
+            // go through the remaining choices the UI supports and make sure they're hidden
+            for (int i = index; i < choices.Length; i++)
+            {
+                Debug.Log("No Choice here");
+                choices[i].gameObject.SetActive(false);
+            }
 
-        StartCoroutine(SelectFirstChoice());
+            StartCoroutine(SelectFirstChoice());
+        }
     }
 
     private IEnumerator SelectFirstChoice()
@@ -288,10 +334,6 @@ public class DialogueManager : MonoBehaviour, IDataPersistence
         if (canContinueToNextLine)
         {
             currentStory.ChooseChoiceIndex(choiceIndex);
-            if (playerControls.Travel.Interact1.triggered)
-            {
-                ContinueStory();
-            }
 
         }
     }

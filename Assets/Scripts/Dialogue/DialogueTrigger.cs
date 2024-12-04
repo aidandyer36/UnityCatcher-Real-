@@ -4,6 +4,7 @@ using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using Ink.Runtime;
+using UnityEngine.SceneManagement;
 
 public class DialogueTrigger : MonoBehaviour
 {
@@ -18,6 +19,7 @@ public class DialogueTrigger : MonoBehaviour
     private PlayerControls playerControls;
     [SerializeField] PlayerController player;
     private bool playerInRange;
+    Scene currentScene;
     
   
 
@@ -39,12 +41,13 @@ private void Awake()
     private void Update()
     {
         playerInRange = player.interactable;
+        
         if (playerInRange && !DialogueManager.GetInstance().dialogueIsPlaying)
         {
           visualCue.SetActive(true);
           if (playerControls.Travel.Interact1.triggered)
            {
-              DialogueManager.GetInstance().EnterDialogueMode(inkJSON);
+              DialogueManager.GetInstance().EnterDialogueMode(inkJSON, false);
            }
         }
         else

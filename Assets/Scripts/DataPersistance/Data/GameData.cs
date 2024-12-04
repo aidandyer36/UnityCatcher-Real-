@@ -10,6 +10,7 @@ public class GameData
 
     public string globalVariablesStateJson;
     public string currentSceneName;
+    public bool hasPlayed;
 
 
     // the values defined in this constructor will be the default values
@@ -19,6 +20,7 @@ public class GameData
         playerPosition = Vector3.zero;
         this.globalVariablesStateJson = "";
         currentSceneName = "";
+        hasPlayed = false;
     }
 
 }
