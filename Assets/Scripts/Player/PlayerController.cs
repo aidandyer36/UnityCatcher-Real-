@@ -202,7 +202,7 @@ public class PlayerController : MonoBehaviour, IDataPersistence
     }
     public bool isInteractable(Vector3 currentpos){
         
-        if(Physics2D.OverlapCircle(currentpos, 0.2f, interaction) != null)
+        if(Physics2D.OverlapCircle(currentpos, 0.1f, interaction) != null)
         {
             Debug.Log("Overlap");
             return true;

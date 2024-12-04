@@ -106,6 +106,71 @@ TextureImporter:
     ignorePlatformSupport: 0
     androidETC2FallbackOverride: 0
     forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: iPhone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: Android
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: VisionOS
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: Windows Store Apps
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: tvOS
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
   spriteSheet:
     serializedVersion: 2
     sprites:
@@ -118,8 +183,8 @@ TextureImporter:
         width: 90.666664
         height: 90.75
       alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 15, y: 0, z: 7, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
@@ -135,12 +200,12 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 90
-        y: 272.25
-        width: 90.666664
-        height: 90.75
+        y: 272
+        width: 90
+        height: 91
       alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 11, y: 0, z: 6, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
@@ -160,8 +225,8 @@ TextureImporter:
         width: 90.666664
         height: 90.75
       alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 10, y: 0, z: 6, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
@@ -177,12 +242,12 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 0
-        y: 182.25
-        width: 90.666664
-        height: 90.75
+        y: 182
+        width: 91
+        height: 91
       alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 14, y: 0, z: 6, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
@@ -198,12 +263,12 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 90
-        y: 182.25
-        width: 90.666664
-        height: 90.75
+        y: 182
+        width: 91
+        height: 91
       alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 14, y: 0, z: 4, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
@@ -223,7 +288,7 @@ TextureImporter:
         width: 90.666664
         height: 90.75
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -240,12 +305,12 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 0
-        y: 92.25
-        width: 90.666664
-        height: 90.75
+        y: 92
+        width: 90
+        height: 91
       alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 13, y: 0, z: 15, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
@@ -261,12 +326,12 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 90
-        y: 92.25
-        width: 90.666664
-        height: 90.75
+        y: 92
+        width: 90
+        height: 91
       alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 17, y: 0, z: 11, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
@@ -282,12 +347,12 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 180
-        y: 92.25
-        width: 90.666664
-        height: 90.75
+        y: 92
+        width: 91
+        height: 91
       alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 14, y: 0, z: 14, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
@@ -307,8 +372,8 @@ TextureImporter:
         width: 90.666664
         height: 90.75
       alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 10, y: 0, z: 19, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
@@ -323,13 +388,13 @@ TextureImporter:
       name: Boy Player-resize_10
       rect:
         serializedVersion: 2
-        x: 90
-        y: 2.25
-        width: 90.666664
-        height: 90.75
+        x: 92
+        y: 2
+        width: 89
+        height: 91
       alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 9, y: 0, z: 18, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
@@ -349,8 +414,8 @@ TextureImporter:
         width: 90.666664
         height: 90.75
       alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 10, y: 0, z: 17, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0

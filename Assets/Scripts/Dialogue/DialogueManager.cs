@@ -34,7 +34,7 @@ public class DialogueManager : MonoBehaviour, IDataPersistence
     private Story currentStory;
     public bool dialogueIsPlaying { get; private set; }
 
-    private bool hasPlayed = false;
+    private bool hasPlayed;
     [SerializeField] private TextAsset JSON;
 
     private bool canContinueToNextLine = false;
@@ -86,7 +86,7 @@ public class DialogueManager : MonoBehaviour, IDataPersistence
         introKynn.SetActive(false);
         introBackground.SetActive(false);
         dialoguePanel.SetActive(false);
-
+        hasPlayed = false;
 
         // get all of the choices text 
         choicesText = new TextMeshProUGUI[choices.Length];
