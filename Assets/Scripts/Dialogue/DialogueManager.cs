@@ -148,6 +148,10 @@ public class DialogueManager : MonoBehaviour, IDataPersistence
             {
                     gameController.InitializeBattle(pokemonBase);
         });
+        currentStory.BindExternalFunction("healing", (string dummy) =>
+        {
+            gameController.HealPlayerParty();
+        });
         Debug.Log("Starting Listening");
         dialogueVariables.StartListening(currentStory);
         
@@ -165,6 +169,7 @@ public class DialogueManager : MonoBehaviour, IDataPersistence
         dialogueVariables.StopListening(currentStory);
         currentStory.UnbindExternalFunction("beginGame");
         currentStory.UnbindExternalFunction("beginFight");
+        currentStory.UnbindExternalFunction("healing");
 
         dialogueIsPlaying = false;
         dialoguePanel.SetActive(false);

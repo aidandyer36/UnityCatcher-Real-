@@ -1,4 +1,5 @@
 ﻿INCLUDE globals.ink
+EXTERNAL healing(string dummy)
 
 -> HealingPrompt
 ===HealingPrompt===
@@ -8,6 +9,7 @@ Would you like me to heal your monsters?
 
 ===HealPokemon===
 There! They should be all better now! Come back when you need healing. Go beat those department heads!
+~healing("true")
 -> DONE
 
 ===RemindPlayer===

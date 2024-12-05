@@ -54,6 +54,5 @@ Your starter is a Newton's Cradle, a Maths type Monster. Is this the starter you
 ===Farewell===
 Well then go off and defeat the department heads for Art, Computer Science, and the other 2! (I didn't want to open the spreadsheet)
  ~beginGame(pokemon1)
- -> DONE
-    
+ -> END
 

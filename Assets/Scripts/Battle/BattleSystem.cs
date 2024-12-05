@@ -22,7 +22,7 @@ public class BattleSystem : MonoBehaviour
     int currentMove;
     bool isChanging;
 
-    public event Action<bool> OnBattleOver;
+    public event Action<bool, Pokemon> OnBattleOver;
 
     private void Awake()
     {
@@ -88,7 +88,7 @@ public class BattleSystem : MonoBehaviour
             yield return dialogueBox.TypeDialogue($"{enemyUnit.Pokemon.Base.Name} fainted!");
 
             yield return new WaitForSeconds(2f);
-            OnBattleOver(true);
+            OnBattleOver(true, enemy);
         }
         else
         {
@@ -111,7 +111,7 @@ public class BattleSystem : MonoBehaviour
             yield return dialogueBox.TypeDialogue($"{playerUnit.Pokemon.Base.Name} fainted!");
 
             yield return new WaitForSeconds(2f);
-            OnBattleOver(false);
+            OnBattleOver(false, enemy);
         }
         else
         {

@@ -52,10 +52,24 @@ public class GameController : MonoBehaviour
         }
     }
 
-    void EndBattle(bool won)
+    void EndBattle(bool won, Pokemon enemy)
     {
+        var playerParty = player.GetComponent<PokemonParty>();
         battleSystem.gameObject.SetActive(false);
+        if(won)
+        {
+            playerParty.pokemons.Add(enemy);
+        }
         bgmMusic.clip = overworldTheme;
         bgmMusic.Play();
     }   
+
+    public void HealPlayerParty()
+    {
+        var playerParty = player.GetComponent<PokemonParty>();
+        foreach(Pokemon pokemon in playerParty.pokemons)
+        {
+            pokemon.HP = pokemon.MaxHP;
+        }
+    }
 }
