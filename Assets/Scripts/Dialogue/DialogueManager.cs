@@ -24,6 +24,8 @@ public class DialogueManager : MonoBehaviour, IDataPersistence
     [SerializeField] private GameObject introBackground;
     [SerializeField] private GameObject introKynn;
     [SerializeField] private GameObject choiceBox4;
+    [SerializeField] private GameObject player;
+    [SerializeField] private GameController gameController;
 
     [Header("Choices UI")]
     [SerializeField] private GameObject[] choices;
@@ -34,10 +36,8 @@ public class DialogueManager : MonoBehaviour, IDataPersistence
     private Story currentStory;
     public bool dialogueIsPlaying { get; private set; }
 
-    private bool hasPlayed;
-    [SerializeField] private TextAsset JSON;
-
     private bool canContinueToNextLine = false;
+    private bool hasPlayed;
 
     private Coroutine displayLineCoroutine;
 
@@ -56,8 +56,9 @@ public class DialogueManager : MonoBehaviour, IDataPersistence
         instance = this;
     
         playerControls = new PlayerControls();
-
+        hasPlayed = false;
     }
+
     public void LoadData(GameData data)
     {
         // now we can create a new DialogueVariables object that's being initialized based on any loaded data
@@ -83,10 +84,7 @@ public class DialogueManager : MonoBehaviour, IDataPersistence
     private void Start()
     {
         dialogueIsPlaying = false;
-        introKynn.SetActive(false);
-        introBackground.SetActive(false);
         dialoguePanel.SetActive(false);
-        hasPlayed = false;
 
         // get all of the choices text 
         choicesText = new TextMeshProUGUI[choices.Length];
@@ -103,10 +101,6 @@ public class DialogueManager : MonoBehaviour, IDataPersistence
         // return right away if dialogue isn't playing
         if (!dialogueIsPlaying)
         {
-            if (!hasPlayed)
-            {
-                DialogueManager.GetInstance().EnterDialogueMode(JSON, true);
-            }
             return;
         }
 
@@ -126,12 +120,6 @@ public class DialogueManager : MonoBehaviour, IDataPersistence
         currentStory = new Story(inkJSON.text);
         dialogueIsPlaying = true;
         dialoguePanel.SetActive(true);
-        if(isIntro)
-        {
-            introBackground.SetActive(true);
-            introKynn.SetActive(true);
-            hasPlayed = true;
-        }
         List<Choice> currentChoices = currentStory.currentChoices;
         if (currentChoices.Count == 0)
         {
@@ -142,13 +130,27 @@ public class DialogueManager : MonoBehaviour, IDataPersistence
         {
             choiceBox4.SetActive(true);
         }
-
-
-        dialogueVariables.StartListening(currentStory);
+        if (isIntro)
+        {
+            introKynn.SetActive(true);
+            introBackground.SetActive(true);
+        }
         currentStory.BindExternalFunction("beginGame", (string starter) =>
         {
-            hasPlayed = true;
+            gameController.InitializeStarter(starter);
+            introKynn.SetActive(false);
+            introBackground.SetActive(false);
+            player.transform.position = new Vector3(-1.49f, 11.25f, 0f);
+
         });
+
+        currentStory.BindExternalFunction("beginFight", (string pokemonBase) =>
+            {
+                    gameController.InitializeBattle(pokemonBase);
+        });
+        Debug.Log("Starting Listening");
+        dialogueVariables.StartListening(currentStory);
+        
 
         // reset portrait, layout, and speaker
         displayNameText.text = "???";
@@ -162,10 +164,9 @@ public class DialogueManager : MonoBehaviour, IDataPersistence
 
         dialogueVariables.StopListening(currentStory);
         currentStory.UnbindExternalFunction("beginGame");
+        currentStory.UnbindExternalFunction("beginFight");
 
         dialogueIsPlaying = false;
-        introKynn.SetActive(false);
-        introBackground.SetActive(false);
         dialoguePanel.SetActive(false);
         dialogueText.text = "";
     }

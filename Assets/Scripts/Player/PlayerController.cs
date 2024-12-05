@@ -20,6 +20,7 @@ public class PlayerController : MonoBehaviour, IDataPersistence
     public LayerMask solidObjectsLayer;
     public LayerMask interactableLayer;
     public LayerMask interaction;
+    public LayerMask portalLayer;
     public GameObject pausemenu; //new//
     public GameObject mapmenu; //new//
     public GameObject controlmenu; //new//
@@ -31,10 +32,12 @@ public class PlayerController : MonoBehaviour, IDataPersistence
 
     private SpriteRenderer spriteRenderer;
     private Vector3 currentPosition;
+    private Vector3 targetPosition;
     private Vector2 input;
     
     private bool isMoving;
     public bool interactable;
+    public bool inPortal;
 
 
     private void Awake()
@@ -45,6 +48,7 @@ public class PlayerController : MonoBehaviour, IDataPersistence
         animator = GetComponent<Animator>();
         spriteRenderer = GetComponent<SpriteRenderer>();
         interactable = false;
+        inPortal = false;
     }
 
     private void OnEnable()
@@ -57,7 +61,8 @@ public class PlayerController : MonoBehaviour, IDataPersistence
         playerControls.Travel.Sprint.performed += _ => Sprint(); //new//
         playerControls.Travel.Sprint.canceled += _ => SprintEnd(); //new//
         rb = GetComponent<Rigidbody2D>(); //new//
-        transform.position = Vector3.zero;
+        transform.position = new Vector3(-73.8899994f, 38.6699982f, 0f);
+        targetPosition = new Vector3(0, 0, 0);
     }
 
     private void Sprint() //new//
@@ -131,6 +136,7 @@ public class PlayerController : MonoBehaviour, IDataPersistence
         }
 
         interactable = isInteractable(currentPosition);
+        inPortal = isPortal(currentPosition, targetPosition);
 
     }
 
@@ -141,6 +147,7 @@ public class PlayerController : MonoBehaviour, IDataPersistence
 
             currentPosition = transform.position;
             Vector3 targetpos = transform.position;
+            targetPosition = targetpos;
             if(movementInput.x != 0) movementInput.y = 0;
             targetpos.x += movementInput.x;
             targetpos.y += movementInput.y; // Update Y position
@@ -166,7 +173,7 @@ public class PlayerController : MonoBehaviour, IDataPersistence
     }
 
     IEnumerator Movement(Vector3 targetpos)
-    {
+    { 
         isMoving = true;
         while((targetpos - transform.position).sqrMagnitude > Mathf.Epsilon){
             transform.position = Vector3.MoveTowards(transform.position, targetpos, speed * Time.deltaTime);
@@ -194,7 +201,7 @@ public class PlayerController : MonoBehaviour, IDataPersistence
 
     private bool isWalkable(Vector3 targetpos)
     {
-        if(Physics2D.OverlapCircle(targetpos, 0.2f, solidObjectsLayer | interactableLayer) != null)
+        if(Physics2D.OverlapCircle(targetpos, 0.05f, solidObjectsLayer | interactableLayer) != null)
         {
             return false;
         }
@@ -205,6 +212,15 @@ public class PlayerController : MonoBehaviour, IDataPersistence
         if(Physics2D.OverlapCircle(currentpos, 0.1f, interaction) != null)
         {
             Debug.Log("Overlap");
+            return true;
+        }
+        return false;
+    }
+
+    public bool isPortal(Vector3 currentpos, Vector3 targetPos)
+    {
+        if (Physics2D.OverlapCircle(currentpos, 0.05f, portalLayer) != null)
+        {
             return true;
         }
         return false;

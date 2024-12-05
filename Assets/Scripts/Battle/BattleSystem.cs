@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -13,25 +14,37 @@ public class BattleSystem : MonoBehaviour
     [SerializeField] BattleDialogueBox dialogueBox;
     private PlayerControls playerControls;
 
+    PokemonParty playerParty;
+    Pokemon enemy;
+
     BattleState state;
     int currentAction;
     int currentMove;
     bool isChanging;
 
+    public event Action<bool> OnBattleOver;
+
     private void Awake()
     {
         playerControls = new PlayerControls();
         Debug.Log("Player Controls Created");
-        StartCoroutine(SetupBattle());
     }
     private void OnEnable()
     {
         playerControls.Enable();
+        
+    }
+    
+    public void StartBattle(PokemonParty playerParty, Pokemon enemy)
+    {
+        this.playerParty = playerParty;
+        this.enemy = enemy;
+        StartCoroutine(SetupBattle());
     }
     public IEnumerator SetupBattle()
     {
-        playerUnit.Setup();
-        enemyUnit.Setup();
+        playerUnit.Setup(playerParty.GetHealthyPokemon(), true);
+        enemyUnit.Setup(enemy, false);
         playerHUD.SetData(playerUnit.Pokemon);
         enemyHUD.SetData(enemyUnit.Pokemon);
 
@@ -73,6 +86,9 @@ public class BattleSystem : MonoBehaviour
         if (isFainted)
         {
             yield return dialogueBox.TypeDialogue($"{enemyUnit.Pokemon.Base.Name} fainted!");
+
+            yield return new WaitForSeconds(2f);
+            OnBattleOver(true);
         }
         else
         {
@@ -93,6 +109,9 @@ public class BattleSystem : MonoBehaviour
         if (isFainted)
         {
             yield return dialogueBox.TypeDialogue($"{playerUnit.Pokemon.Base.Name} fainted!");
+
+            yield return new WaitForSeconds(2f);
+            OnBattleOver(false);
         }
         else
         {

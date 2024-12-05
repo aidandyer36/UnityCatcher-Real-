@@ -1,5 +1,6 @@
+EXTERNAL beginGame(string starter)
 INCLUDE globals.ink
-EXTERNAL beginGame(starter)
+
 ->Begin
 ===Begin===
 #speaker:Professor Kynn 
@@ -20,38 +21,39 @@ What is your major?
 ===English===
 #speaker:Professor Kynn 
 Your starter is Fahrenheit 451, an arts type Monster. Is this the starter you want?
-    +[Yes] -> DONE
-        ~pokemon1 = "Fahrenheit451"
+    +[Yes] 
+        ~pokemon1 = "Celsius 233"
         ~kynnTutorial = true
-
-        -> DONE
+        -> Farewell
     +[No] -> ChooseMajor
 ===Education===
 #speaker:Professor Kynn 
 Your starter is an Apple, a lame type Monster. Is this the starter you want? 
-    +[Yes] -> DONE
-        ~pokemon1 = "Apple"
+    +[Yes] 
+        ~pokemon1 = "Fuji"
         ~kynnTutorial = true
-        ~beginGame("Apple")
-        -> DONE
+        -> Farewell
     +[No] -> ChooseMajor
 ===Anthropology===
 #speaker:Professor Kynn
 Your starter is a Skull, a social type Monster. Is this the starter you want? 
-    +[Yes] -> DONE
-        ~pokemon1 = "Skull"
+    +[Yes] 
+        ~pokemon1 = "Nasull"
         ~kynnTutorial = true
-        ~beginGame("Skull")
-        -> DONE
+        -> Farewell
     +[No] -> ChooseMajor
 ===Physics===
 #speaker:Professor Kynn
 Your starter is a Newton's Cradle, a Maths type Monster. Is this the starter you want?
-    +[Yes] -> DONE
-        ~pokemon1 = "Newton's Cradle"
+    +[Yes] 
+        ~pokemon1 = "Newdle"
         ~kynnTutorial = true
-        ~beginGame("Newton's Cradle")
-        -> DONE
+        -> Farewell
     +[No] -> ChooseMajor
+
+===Farewell===
+Well then go off and defeat the department heads for Art, Computer Science, and the other 2! (I didn't want to open the spreadsheet)
+ ~beginGame(pokemon1)
+ -> DONE
     
 

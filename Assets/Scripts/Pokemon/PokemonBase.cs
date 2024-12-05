@@ -98,5 +98,8 @@ public enum MonsterType{
     Bug,
     Rock,
     Ghost,
-
+    Art,
+    Education,
+    STEM,
+    Social,
 }

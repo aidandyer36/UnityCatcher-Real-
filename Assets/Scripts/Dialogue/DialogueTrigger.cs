@@ -17,7 +17,6 @@ public class DialogueTrigger : MonoBehaviour
 
 
     private PlayerControls playerControls;
-    [SerializeField] PlayerController player;
     private bool playerInRange;
     Scene currentScene;
     
@@ -40,11 +39,14 @@ private void Awake()
 
     private void Update()
     {
-        playerInRange = player.interactable;
         
         if (playerInRange && !DialogueManager.GetInstance().dialogueIsPlaying)
         {
           visualCue.SetActive(true);
+            if(this.tag == "Introduction")
+            {
+                DialogueManager.GetInstance().EnterDialogueMode(inkJSON, true);
+            }
           if (playerControls.Travel.Interact1.triggered)
            {
               DialogueManager.GetInstance().EnterDialogueMode(inkJSON, false);

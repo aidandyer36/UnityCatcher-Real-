@@ -178,13 +178,13 @@ TextureImporter:
       name: Boy Player-resize_0
       rect:
         serializedVersion: 2
-        x: 0
-        y: 272.25
-        width: 90.666664
-        height: 90.75
+        x: 10
+        y: 273
+        width: 73
+        height: 90
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
-      border: {x: 15, y: 0, z: 7, w: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
@@ -199,13 +199,13 @@ TextureImporter:
       name: Boy Player-resize_1
       rect:
         serializedVersion: 2
-        x: 90
-        y: 272
-        width: 90
-        height: 91
+        x: 100
+        y: 273
+        width: 74
+        height: 90
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
-      border: {x: 11, y: 0, z: 6, w: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
@@ -220,13 +220,13 @@ TextureImporter:
       name: Boy Player-resize_2
       rect:
         serializedVersion: 2
-        x: 180
-        y: 272.25
-        width: 90.666664
-        height: 90.75
+        x: 191
+        y: 272
+        width: 73
+        height: 91
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
-      border: {x: 10, y: 0, z: 6, w: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
@@ -241,13 +241,13 @@ TextureImporter:
       name: Boy Player-resize_3
       rect:
         serializedVersion: 2
-        x: 0
-        y: 182
-        width: 91
-        height: 91
+        x: 12
+        y: 185
+        width: 74
+        height: 88
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
-      border: {x: 14, y: 0, z: 6, w: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
@@ -262,13 +262,13 @@ TextureImporter:
       name: Boy Player-resize_4
       rect:
         serializedVersion: 2
-        x: 90
+        x: 103
         y: 182
-        width: 91
-        height: 91
+        width: 73
+        height: 92
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
-      border: {x: 14, y: 0, z: 4, w: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
@@ -283,10 +283,10 @@ TextureImporter:
       name: Boy Player-resize_5
       rect:
         serializedVersion: 2
-        x: 180
-        y: 182.25
-        width: 90.666664
-        height: 90.75
+        x: 192
+        y: 182
+        width: 73
+        height: 90
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -304,13 +304,13 @@ TextureImporter:
       name: Boy Player-resize_6
       rect:
         serializedVersion: 2
-        x: 0
+        x: 14
         y: 92
-        width: 90
+        width: 62
         height: 91
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
-      border: {x: 13, y: 0, z: 15, w: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
@@ -325,13 +325,13 @@ TextureImporter:
       name: Boy Player-resize_7
       rect:
         serializedVersion: 2
-        x: 90
+        x: 106
         y: 92
-        width: 90
+        width: 62
         height: 91
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
-      border: {x: 17, y: 0, z: 11, w: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
@@ -346,13 +346,13 @@ TextureImporter:
       name: Boy Player-resize_8
       rect:
         serializedVersion: 2
-        x: 180
+        x: 193
         y: 92
-        width: 91
+        width: 63
         height: 91
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
-      border: {x: 14, y: 0, z: 14, w: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
@@ -367,13 +367,13 @@ TextureImporter:
       name: Boy Player-resize_9
       rect:
         serializedVersion: 2
-        x: 0
-        y: 2.25
-        width: 90.666664
-        height: 90.75
+        x: 10
+        y: 2
+        width: 63
+        height: 91
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
-      border: {x: 10, y: 0, z: 19, w: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
@@ -388,13 +388,13 @@ TextureImporter:
       name: Boy Player-resize_10
       rect:
         serializedVersion: 2
-        x: 92
+        x: 101
         y: 2
-        width: 89
+        width: 62
         height: 91
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
-      border: {x: 9, y: 0, z: 18, w: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
@@ -409,13 +409,13 @@ TextureImporter:
       name: Boy Player-resize_11
       rect:
         serializedVersion: 2
-        x: 180
-        y: 2.25
-        width: 90.666664
-        height: 90.75
+        x: 192
+        y: 2
+        width: 60
+        height: 91
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
-      border: {x: 10, y: 0, z: 17, w: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0

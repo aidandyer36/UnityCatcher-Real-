@@ -1,0 +1,29 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 52ede5e3309c1a04d92150ba50538c14, type: 3}
+  m_Name: Mozama
+  m_EditorClassIdentifier: 
+  name: Mozama
+  description: A piano!
+  frontSprite: {fileID: 21300000, guid: 27717b55c5cff2a48bc1a264c7e5df1c, type: 3}
+  backSprite: {fileID: 21300000, guid: d0424c19b6a68d74a85bf76946d491f8, type: 3}
+  type1: 15
+  type2: 0
+  maxHP: 39
+  attack: 10
+  defense: 10
+  spAttack: 10
+  spDefense: 10
+  speed: 10
+  learnableMoves:
+  - moveBase: {fileID: 11400000, guid: d02d750a8bb16fa41912d743a352407e, type: 2}
+    level: 0
